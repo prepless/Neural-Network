@@ -1,7 +1,7 @@
 package neuralnetwork;
 
-import com.zedcode.Board;
-import com.zedcode.SnakeSimulator;
+import game.snake.Board;
+import game.snake.SnakeSimulator;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.zedcode;
+package game.snake;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;

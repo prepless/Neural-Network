@@ -1,6 +1,6 @@
 package neuralnetwork;
 
-import com.zedcode.SnakeSimulator;
+import game.snake.SnakeSimulator;
 
 import java.util.Comparator;
 
