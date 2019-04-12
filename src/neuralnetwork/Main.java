@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         int numberOfGenerations = 1000;
         int generationSize = 1000;
-        int[] networkSize = new int[]{900, 50,50,4};
+        int[] networkSize = new int[]{900 ,50 ,50 ,4 };
         Main main = new Main();
         main.createGenerations(numberOfGenerations,generationSize,networkSize);
     }
