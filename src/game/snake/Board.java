@@ -17,12 +17,9 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
-    public boolean isPlayer = true;
-
     private final int B_WIDTH = 300;
     private final int B_HEIGHT = 300;
     private final int DELAY = 140;
-
 
     private final int ALL_DOTS = 900;
     private final int DOT_SIZE = 10;
@@ -36,7 +33,6 @@ public class Board extends JPanel implements ActionListener {
     private SnakeSimulator snakeSimulator = new SnakeSimulator(30, 30);
 
     public Board() {
-
         initBoard();
     }
 
@@ -120,7 +116,6 @@ public class Board extends JPanel implements ActionListener {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if(isPlayer) {
                 int key = e.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
@@ -138,7 +133,6 @@ public class Board extends JPanel implements ActionListener {
                 if (key == KeyEvent.VK_DOWN) {
                     snakeSimulator.down();
                 }
-            }
         }
     }
 }
