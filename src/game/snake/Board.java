@@ -17,6 +17,8 @@ import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
 
+    public boolean isPlayer = true;
+
     private final int B_WIDTH = 300;
     private final int B_HEIGHT = 300;
     private final int DELAY = 140;
@@ -39,7 +41,6 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void initBoard() {
-
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
@@ -47,7 +48,6 @@ public class Board extends JPanel implements ActionListener {
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();
         initGame();
-
     }
 
     private void loadImages() {
@@ -109,8 +109,6 @@ public class Board extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-
         snakeSimulator.step();
         if (!snakeSimulator.getIngame()) {
             timer.stop();
@@ -122,23 +120,24 @@ public class Board extends JPanel implements ActionListener {
 
         @Override
         public void keyPressed(KeyEvent e) {
+            if(isPlayer) {
+                int key = e.getKeyCode();
 
-            int key = e.getKeyCode();
+                if (key == KeyEvent.VK_LEFT) {
+                    snakeSimulator.left();
+                }
 
-            if (key == KeyEvent.VK_LEFT){
-                snakeSimulator.left();
-            }
+                if (key == KeyEvent.VK_RIGHT) {
+                    snakeSimulator.right();
+                }
 
-            if (key == KeyEvent.VK_RIGHT){
-                snakeSimulator.right();
-            }
+                if (key == KeyEvent.VK_UP) {
+                    snakeSimulator.up();
+                }
 
-            if (key == KeyEvent.VK_UP){
-                snakeSimulator.up();
-            }
-
-            if (key == KeyEvent.VK_DOWN) {
-                snakeSimulator.down();
+                if (key == KeyEvent.VK_DOWN) {
+                    snakeSimulator.down();
+                }
             }
         }
     }

@@ -112,7 +112,6 @@ public class Main {
             int dotY = snake.getY(i);
 
             int position = dotY * snake.getWidth() + dotX;
-
             if(position < 0){
                 System.out.println("Error.");
             }

@@ -24,6 +24,8 @@ public class SnakeSimulator {
     private int width;
     private int height;
 
+    SnakeReplay replay = new SnakeReplay();
+
     public SnakeSimulator(int width, int height){
 
         this.width = width;
@@ -97,12 +99,13 @@ public class SnakeSimulator {
     }
 
     public void locateApple() {
-
         apple_x = (int) (Math.random() * width);
         apple_y = (int) (Math.random() * height);
+        replay.addApples(apple_x,apple_y);
     }
 
     public void left(){
+        replay.addMoves(0);
         if(!rightDirection){
             leftDirection = true;
             upDirection = false;
@@ -111,6 +114,7 @@ public class SnakeSimulator {
     }
 
     public void right() {
+        replay.addMoves(1);
         if(!leftDirection){
             rightDirection = true;
             upDirection = false;
@@ -119,6 +123,7 @@ public class SnakeSimulator {
     }
 
     public void up(){
+        replay.addMoves(2);
         if(!downDirection) {
             upDirection = true;
             rightDirection = false;
@@ -127,6 +132,7 @@ public class SnakeSimulator {
     }
 
     public void down() {
+        replay.addMoves(3);
         if(!upDirection) {
             downDirection = true;
             rightDirection = false;
