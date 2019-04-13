@@ -12,17 +12,25 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         int numberOfGenerations = 1000;
-        int generationSize = 1000;
+        int generationSize = 500;
         int[] networkSize = new int[]{900 ,50 ,50 ,4 };
         Main main = new Main();
         main.createGenerations(numberOfGenerations,generationSize,networkSize);
     }
 
     public void createGenerations(int numberOfgenerations, int generationSize, int[] size) throws Exception {
+        double highestHighscore = 0.0;
+        int highestHighscoreGeneration = 0;
+
         List<GameResult> resultList = executeNetworks(createFirstGeneration(generationSize, size));
         for (int i = 0; i < numberOfgenerations; i++){
             GameResult winner = determineWinner(resultList);
-            System.out.println("Generation "+(i+1)+" has finished. High score: " + winner.calculateScore());
+            double highScore =winner.calculateScore();
+            if(highScore>highestHighscore){
+                highestHighscore=highScore;
+                highestHighscoreGeneration = i;
+            }
+            System.out.println("Generation "+(i+1)+" has finished. High score: " + highScore + ".      Highest highscore: (gen): "+(highestHighscoreGeneration+1)+" (score): " + highestHighscore);
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
         }
@@ -51,7 +59,6 @@ public class Main {
 
     public List<GameResult> executeNetworks(List<Network> networkList) throws Exception{
 
-        int i = 0;
         ArrayList<GameResult> gameResults = new ArrayList<>();
         for (Network network: networkList) {
             SnakeSimulator snake = new SnakeSimulator(30, 30);
@@ -62,7 +69,6 @@ public class Main {
                 snake.step();
             }
             gameResults.add(new GameResult(snake,network));
-            i++;
         }
         return gameResults;
     }
