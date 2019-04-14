@@ -8,9 +8,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.*;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 public class Board extends JPanel implements ActionListener {
 
@@ -37,6 +35,7 @@ public class Board extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
+        setBorder(BorderFactory.createLineBorder(Color.GREEN));
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();

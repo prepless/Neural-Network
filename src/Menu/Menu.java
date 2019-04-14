@@ -14,6 +14,7 @@ public class Menu extends JFrame implements Runnable{
     private double highestHighscore = 0.0;
     private JLabel highScoreLabel = new JLabel();
     private JTextArea scoreBoardTextArea = new JTextArea();
+    private JPanel menuPanel = new JPanel();
 
     private Trainer trainer;
 
@@ -21,7 +22,7 @@ public class Menu extends JFrame implements Runnable{
             initUI();
         }
 
-        private void initUI() {
+        public void initUI() {
             //buttons
             JButton playGame = new JButton("Play Snake");
             JButton AIPlay = new JButton("Train Snake");
@@ -42,12 +43,14 @@ public class Menu extends JFrame implements Runnable{
             scroll.getHorizontalScrollBar().setBackground(Color.black);
             scoreBoardTextArea.setBackground(Color.black);
             scoreBoardTextArea.setForeground(Color.gray);
+            scoreBoardTextArea.setEditable(false);
+            scoreBoardTextArea.setLineWrap(true);
+            scoreBoardTextArea.setWrapStyleWord(true);
 
             //menu panel
-            JPanel menuPanel = new JPanel();
             menuPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
             menuPanel.setBackground(Color.black);
-            menuPanel.setPreferredSize(new Dimension(500, 300));
+            menuPanel.setPreferredSize(new Dimension(500, 340));
             menuPanel.setFocusable(true);
             menuPanel.add(playGame);
             menuPanel.add(AIPlay);
@@ -66,7 +69,10 @@ public class Menu extends JFrame implements Runnable{
             //action listeners
             playGame.addActionListener(
                     e -> {
-                        menuPanel.setVisible(false);
+                        highScoreLabel.setText("Score:");
+                        scroll.setVisible(false);
+                        AIPlay.setVisible(false);
+                        playGame.setVisible(false);
                         startSnake();
                     });
             AIPlay.addActionListener(
@@ -81,7 +87,7 @@ public class Menu extends JFrame implements Runnable{
 
         private void startSnake(){
             Board board = new Board();
-            add(board);
+            menuPanel.add(board);
             board.initBoard();
             board.requestFocus();
             pack();
@@ -102,8 +108,10 @@ public class Menu extends JFrame implements Runnable{
                 this.highestHighscore=highScore;
                 bestSnake = generation;
             }
-            highScoreLabel.setText("test");
-            scoreBoardTextArea.setText("test");
+
+
+            System.out.println("Generation "+generation+" has finished. High score: " + highScore +".");
+
             highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
             scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".");
         }
@@ -118,11 +126,9 @@ public class Menu extends JFrame implements Runnable{
 
     public void run() {
         while(true){
-
-            System.out.println(this.trainer.generation);
             try {
-                //    menu.appendScore(getGeneration(), getgenerationHighScore());
-              //  this.currentGen = getGeneration();
+                    appendScore(this.trainer.generation, this.trainer.highScore);
+                //this.currentGen = getGeneration();
             }
             catch (Exception e){System.out.println("no score yet");}
         }
