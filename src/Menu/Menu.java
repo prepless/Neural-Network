@@ -6,14 +6,12 @@ import neuralnetwork.Trainer;
 import javax.swing.*;
 import java.awt.*;
 
-public class Menu extends JFrame implements Runnable{
+public class Menu extends JFrame {
 
-    private static Menu menu = new Menu();
-
-    public int bestSnake = 0;
-    private double highestHighscore = 0.0;
-    private JLabel highScoreLabel = new JLabel();
-    private JTextArea scoreBoardTextArea = new JTextArea();
+    private static int bestSnake = 0;
+    private static double highestHighscore = 0.0;
+    private static JLabel highScoreLabel = new JLabel();
+    private static JTextArea scoreBoardTextArea = new JTextArea();
     private JPanel menuPanel = new JPanel();
 
     private Trainer trainer;
@@ -26,16 +24,22 @@ public class Menu extends JFrame implements Runnable{
             //buttons
             JButton playGame = new JButton("Play Snake");
             JButton AIPlay = new JButton("Train Snake");
+            JButton rePlay = new JButton("Watch Replay");
             playGame.setBackground(Color.GREEN);
             AIPlay.setBackground(Color.GREEN);
             playGame.setForeground(Color.BLACK);
             AIPlay.setForeground(Color.BLACK);
+            rePlay.setBackground(Color.GREEN);
+            rePlay.setForeground(Color.BLACK);
+            rePlay.setPreferredSize(new Dimension(90,20));
+            rePlay.setFont(new Font("Helvetica", Font.BOLD, 8));
 
             //score board
-            highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
+            highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore);
+            highScoreLabel.setForeground(Color.GRAY);
             highScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
             highScoreLabel.setVerticalAlignment(SwingConstants.CENTER);
-            highScoreLabel.setPreferredSize(new Dimension(480,20));
+            highScoreLabel.setPreferredSize(new Dimension(365,20));
 
             JScrollPane scroll = new JScrollPane(scoreBoardTextArea);
             scroll.setPreferredSize(new Dimension(480,180));
@@ -56,6 +60,7 @@ public class Menu extends JFrame implements Runnable{
             menuPanel.add(AIPlay);
 
             menuPanel.add(highScoreLabel);
+            menuPanel.add(rePlay);
             menuPanel.add(scroll);
 
             //frame
@@ -70,6 +75,7 @@ public class Menu extends JFrame implements Runnable{
             playGame.addActionListener(
                     e -> {
                         highScoreLabel.setText("Score:");
+                        rePlay.setVisible(false);
                         scroll.setVisible(false);
                         AIPlay.setVisible(false);
                         playGame.setVisible(false);
@@ -77,11 +83,14 @@ public class Menu extends JFrame implements Runnable{
                     });
             AIPlay.addActionListener(
                     e -> {
-                        menuPanel.setVisible(false);
                         try {
                             trainSnake();
                         }
                         catch (Exception ex){System.out.println(ex);}
+                    });
+            rePlay.addActionListener(
+                    e -> {
+                       scoreBoardTextArea.append("No replays saved.\n");
                     });
         }
 
@@ -97,23 +106,19 @@ public class Menu extends JFrame implements Runnable{
 
         private void trainSnake() throws Exception{
             trainer = new Trainer();
-            //new Thread(new CheckScore(menu, trainer)).start();
-            new Thread(this::run).start();
             trainer.startNeuralNetwork();
-
         }
 
-        public void appendScore(int generation, double highScore){
-            if(highScore>this.highestHighscore){
-                this.highestHighscore=highScore;
+        public static void appendScore(int generation, double highScore){
+            if(highScore>highestHighscore){
+                highestHighscore=highScore;
                 bestSnake = generation;
             }
 
-
-            System.out.println("Generation "+generation+" has finished. High score: " + highScore +".");
+            System.out.println("Generation "+generation+" has finished. High score: " + highScore );
 
             highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
-            scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".");
+            scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".\n");
         }
 
         public static void main(String[] args) {
@@ -122,16 +127,6 @@ public class Menu extends JFrame implements Runnable{
             frame.setVisible(true);
          });
 
-    }
-
-    public void run() {
-        while(true){
-            try {
-                    appendScore(this.trainer.generation, this.trainer.highScore);
-                //this.currentGen = getGeneration();
-            }
-            catch (Exception e){System.out.println("no score yet");}
-        }
     }
 
 }

@@ -35,7 +35,7 @@ public class Board extends JPanel implements ActionListener {
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
-        setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
         loadImages();
@@ -94,7 +94,7 @@ public class Board extends JPanel implements ActionListener {
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = getFontMetrics(small);
 
-        g.setColor(Color.white);
+        g.setColor(Color.GREEN);
         g.setFont(small);
         g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
     }

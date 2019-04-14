@@ -1,5 +1,5 @@
 package neuralnetwork;
-import Menu.CheckScore;
+import Menu.Menu;
 import game.snake.SnakeSimulator;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +25,12 @@ public class Trainer {
             GameResult winner = determineWinner(resultList);
             highScore =winner.calculateScore();
             generation = i+1;
+            Menu.appendScore(generation,highScore);
 
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
             System.out.println("Training");
+
         }
         System.out.println("Finished");
     }
