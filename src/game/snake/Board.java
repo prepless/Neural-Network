@@ -7,10 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -33,10 +30,10 @@ public class Board extends JPanel implements ActionListener {
     private SnakeSimulator snakeSimulator = new SnakeSimulator(30, 30);
 
     public Board() {
-        initBoard();
+        //initBoard();
     }
 
-    private void initBoard() {
+    public void initBoard() {
         addKeyListener(new TAdapter());
         setBackground(Color.black);
         setFocusable(true);
@@ -112,8 +109,8 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
 
-    private class TAdapter extends KeyAdapter {
 
+    private class TAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
                 int key = e.getKeyCode();
@@ -133,6 +130,17 @@ public class Board extends JPanel implements ActionListener {
                 if (key == KeyEvent.VK_DOWN) {
                     snakeSimulator.down();
                 }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+            System.out.println("called 3");
         }
     }
 }

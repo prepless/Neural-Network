@@ -1,21 +1,21 @@
 package neuralnetwork;
 
-import game.snake.Board;
 import game.snake.SnakeSimulator;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-public class Main {
+public class Trainer {
 
-    public static void main(String[] args) throws Exception {
+    public void startNeuralNetwork() throws Exception {
         int numberOfGenerations = 1000;
         int generationSize = 500;
-        int[] networkSize = new int[]{900 ,50 ,50 ,4 };
-        Main main = new Main();
-        main.createGenerations(numberOfGenerations,generationSize,networkSize);
+        int[] networkSize = new int[]{900 ,100 ,60 ,40 ,4 };
+        Trainer trainer = new Trainer();
+        trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
     }
 
     public void createGenerations(int numberOfgenerations, int generationSize, int[] size) throws Exception {
@@ -26,14 +26,11 @@ public class Main {
         for (int i = 0; i < numberOfgenerations; i++){
             GameResult winner = determineWinner(resultList);
             double highScore =winner.calculateScore();
-            if(highScore>highestHighscore){
-                highestHighscore=highScore;
-                highestHighscoreGeneration = i;
-            }
-            System.out.println("Generation "+(i+1)+" has finished. High score: " + highScore + ".      Highest highscore: (gen): "+(highestHighscoreGeneration+1)+" (score): " + highestHighscore);
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
         }
+        // in de menu class appendScore aan roepen
+
         System.out.println("Finished");
     }
 
