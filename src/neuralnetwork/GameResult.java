@@ -1,11 +1,7 @@
 package neuralnetwork;
-
 import game.snake.SnakeSimulator;
 
-import java.util.Comparator;
-
 public class GameResult implements Comparable<GameResult> {
-
 
     private SnakeSimulator game;
     private Network network;
@@ -26,7 +22,6 @@ public class GameResult implements Comparable<GameResult> {
     public double calculateScore(){
         double totalScore = game.newScore.totalScore();
        // double timePlayed = (game.newScore.elapsedGameTimeMin()/60) + game.newScore.elapsedGameTimeSec();
-
         return totalScore;//-(timePlayed/100);
     }
 

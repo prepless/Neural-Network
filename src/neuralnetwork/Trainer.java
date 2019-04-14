@@ -30,7 +30,6 @@ public class Trainer {
             resultList = executeNetworks(networkList);
         }
         // in de menu class appendScore aan roepen
-
         System.out.println("Finished");
     }
 
