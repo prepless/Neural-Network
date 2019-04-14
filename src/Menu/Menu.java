@@ -1,15 +1,21 @@
+package Menu;
+
 import game.snake.Board;
 import neuralnetwork.Trainer;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Menu extends JFrame {
+public class Menu extends JFrame implements Runnable{
 
-    public int highestHighscoreGeneration = 0;
+    private static Menu menu = new Menu();
+
+    public int bestSnake = 0;
     private double highestHighscore = 0.0;
     private JLabel highScoreLabel = new JLabel();
-    private JTextArea scoreBoard = new JTextArea();
+    private JTextArea scoreBoardTextArea = new JTextArea();
+
+    private Trainer trainer;
 
         public Menu() {
             initUI();
@@ -25,17 +31,17 @@ public class Menu extends JFrame {
             AIPlay.setForeground(Color.BLACK);
 
             //score board
-            highScoreLabel.setText("Highest highscore: generation "+highestHighscoreGeneration+" with a score of "+highestHighscore+".");
+            highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
             highScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
             highScoreLabel.setVerticalAlignment(SwingConstants.CENTER);
             highScoreLabel.setPreferredSize(new Dimension(480,20));
 
-            JScrollPane scroll = new JScrollPane(scoreBoard);
+            JScrollPane scroll = new JScrollPane(scoreBoardTextArea);
             scroll.setPreferredSize(new Dimension(480,180));
             scroll.getVerticalScrollBar().setBackground(Color.black);
             scroll.getHorizontalScrollBar().setBackground(Color.black);
-            scoreBoard.setBackground(Color.black);
-            scoreBoard.setForeground(Color.gray);
+            scoreBoardTextArea.setBackground(Color.black);
+            scoreBoardTextArea.setForeground(Color.gray);
 
             //menu panel
             JPanel menuPanel = new JPanel();
@@ -58,7 +64,6 @@ public class Menu extends JFrame {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
             //action listeners
-            //////snake werkt wel zonder onderstaande ActionListner... maar niet met... :S
             playGame.addActionListener(
                     e -> {
                         menuPanel.setVisible(false);
@@ -78,23 +83,29 @@ public class Menu extends JFrame {
             Board board = new Board();
             add(board);
             board.initBoard();
+            board.requestFocus();
             pack();
             setTitle("Snake");
             setLocationRelativeTo(null);
         }
 
         private void trainSnake() throws Exception{
-            Trainer trainer = new Trainer();
+            trainer = new Trainer();
+            //new Thread(new CheckScore(menu, trainer)).start();
+            new Thread(this::run).start();
             trainer.startNeuralNetwork();
+
         }
 
         public void appendScore(int generation, double highScore){
-            if(highScore>highestHighscore){
-                highestHighscore=highScore;
-                highestHighscoreGeneration = generation;
+            if(highScore>this.highestHighscore){
+                this.highestHighscore=highScore;
+                bestSnake = generation;
             }
-            highScoreLabel.setText("Highest highscore: generation "+highestHighscoreGeneration+" with a score of "+highestHighscore+".");
-            scoreBoard.append("Generation "+generation+" has finished. High score: " + highScore +".");
+            highScoreLabel.setText("test");
+            scoreBoardTextArea.setText("test");
+            highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
+            scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".");
         }
 
         public static void main(String[] args) {
@@ -103,6 +114,18 @@ public class Menu extends JFrame {
             frame.setVisible(true);
          });
 
+    }
+
+    public void run() {
+        while(true){
+
+            System.out.println(this.trainer.generation);
+            try {
+                //    menu.appendScore(getGeneration(), getgenerationHighScore());
+              //  this.currentGen = getGeneration();
+            }
+            catch (Exception e){System.out.println("no score yet");}
+        }
     }
 
 }

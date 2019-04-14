@@ -1,35 +1,35 @@
 package neuralnetwork;
-
+import Menu.CheckScore;
 import game.snake.SnakeSimulator;
-
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class Trainer {
 
+    public double highScore = 0.0;
+    public int generation =0;
+
     public void startNeuralNetwork() throws Exception {
+
         int numberOfGenerations = 1000;
         int generationSize = 500;
-        int[] networkSize = new int[]{900 ,100 ,60 ,40 ,4 };
+        int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
         trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
     }
 
     public void createGenerations(int numberOfgenerations, int generationSize, int[] size) throws Exception {
-        double highestHighscore = 0.0;
-        int highestHighscoreGeneration = 0;
-
         List<GameResult> resultList = executeNetworks(createFirstGeneration(generationSize, size));
         for (int i = 0; i < numberOfgenerations; i++){
             GameResult winner = determineWinner(resultList);
-            double highScore =winner.calculateScore();
+            highScore =winner.calculateScore();
+            generation = i+1;
+
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
+            System.out.println("Training");
         }
-        // in de menu class appendScore aan roepen
         System.out.println("Finished");
     }
 
