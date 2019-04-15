@@ -13,6 +13,7 @@ public class Menu extends JFrame {
     private static JLabel highScoreLabel = new JLabel();
     private static JTextArea scoreBoardTextArea = new JTextArea();
     private JPanel menuPanel = new JPanel();
+    private static boolean training = false;
 
     private Trainer trainer;
 
@@ -83,10 +84,10 @@ public class Menu extends JFrame {
                     });
             AIPlay.addActionListener(
                     e -> {
-                        try {
-                            trainSnake();
-                        }
-                        catch (Exception ex){System.out.println(ex);}
+                            if(!training) {
+                                trainSnake();
+                            }
+
                     });
             rePlay.addActionListener(
                     e -> {
@@ -104,12 +105,18 @@ public class Menu extends JFrame {
             setLocationRelativeTo(null);
         }
 
-        private void trainSnake() throws Exception{
-            trainer = new Trainer();
-            trainer.startNeuralNetwork();
+        private void trainSnake() {
+            try {
+                    training = true;
+                    trainer = new Trainer();
+                    trainer.startNeuralNetwork();
+            }
+            catch (Exception ex){System.out.println(ex);}
+
         }
 
         public static void appendScore(int generation, double highScore){
+
             if(highScore>highestHighscore){
                 highestHighscore=highScore;
                 bestSnake = generation;
@@ -117,8 +124,13 @@ public class Menu extends JFrame {
 
             System.out.println("Generation "+generation+" has finished. High score: " + highScore );
 
-            highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
-            scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".\n");
+                highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
+                scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".\n");
+
+        }
+
+        public static void setTraining(){
+            training = false;
         }
 
         public static void main(String[] args) {

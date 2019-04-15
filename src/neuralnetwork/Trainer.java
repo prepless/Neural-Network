@@ -4,7 +4,6 @@ import game.snake.SnakeSimulator;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Trainer {
 
     public double highScore = 0.0;
@@ -12,7 +11,7 @@ public class Trainer {
 
     public void startNeuralNetwork() throws Exception {
 
-        int numberOfGenerations = 1000;
+        int numberOfGenerations = 5000;
         int generationSize = 500;
         int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
@@ -33,6 +32,7 @@ public class Trainer {
 
         }
         System.out.println("Finished");
+        Menu.setTraining();
     }
 
     public List<Network> createFirstGeneration(int generationSize, int[] size){
