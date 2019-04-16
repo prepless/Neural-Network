@@ -43,7 +43,6 @@ public class Trainer extends SwingWorker<Object, Object> {
             resultList = executeNetworks(networkList);
 
         }
-        done();
     }
 
     public List<Network> createFirstGeneration(int generationSize, int[] size){

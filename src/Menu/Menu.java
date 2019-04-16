@@ -156,10 +156,9 @@ public class Menu extends JFrame {
                 scoreBoardTextArea.append("Generation " + generation + " has finished. High score: " + highScore + ".\n");
         }
 
-
-
         public static void setTrainingDone(){
             training = false;
+            scoreBoardTextArea.append("Snakes are done training, you can now see a replay of the best snake.\n");
         }
 
         public static void main(String[] args) {
