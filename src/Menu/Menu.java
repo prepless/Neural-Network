@@ -87,7 +87,6 @@ public class Menu extends JFrame {
                             if(!training) {
                                 trainSnake();
                             }
-
                     });
             rePlay.addActionListener(
                     e -> {
@@ -117,19 +116,17 @@ public class Menu extends JFrame {
 
         public static void appendScore(int generation, double highScore){
 
-            if(highScore>highestHighscore){
-                highestHighscore=highScore;
-                bestSnake = generation;
-            }
-
-            System.out.println("Generation "+generation+" has finished. High score: " + highScore );
-
-                highScoreLabel.setText("Highest highscore: generation "+bestSnake+" with a score of "+highestHighscore+".");
-                scoreBoardTextArea.append("Generation "+generation+" has finished. High score: " + highScore +".\n");
-
+                if (highScore > highestHighscore) {
+                   highestHighscore = highScore;
+                    bestSnake = generation;
+                }
+                highScoreLabel.setText("Highest highscore: generation " + bestSnake + " with a score of " + highestHighscore + ".");
+                scoreBoardTextArea.append("Generation " + generation + " has finished. High score: " + highScore + ".\n");
         }
 
-        public static void setTraining(){
+
+
+        public static void setTrainingDone(){
             training = false;
         }
 

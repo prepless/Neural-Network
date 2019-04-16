@@ -1,21 +1,33 @@
 package neuralnetwork;
 import Menu.Menu;
 import game.snake.SnakeSimulator;
+
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trainer {
+public class Trainer extends SwingWorker<Object, Object> {
 
     public double highScore = 0.0;
     public int generation =0;
 
-    public void startNeuralNetwork() throws Exception {
-
-        int numberOfGenerations = 5000;
-        int generationSize = 500;
+    //do In Background so that JFrame does not freeze
+    @Override
+    protected Object doInBackground() throws Exception {
+        int numberOfGenerations = 1000;
+        int generationSize = 1000;
         int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
         trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
+        return null;
+    }
+
+    @Override
+    protected void done() {
+        Menu.setTrainingDone();
+    }
+    public void startNeuralNetwork() {
+        execute(); // start to do the "doInBackground stuff"
     }
 
     public void createGenerations(int numberOfgenerations, int generationSize, int[] size) throws Exception {
@@ -28,11 +40,8 @@ public class Trainer {
 
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
-            System.out.println("Training");
 
-        }
-        System.out.println("Finished");
-        Menu.setTraining();
+        }done();
     }
 
     public List<Network> createFirstGeneration(int generationSize, int[] size){
