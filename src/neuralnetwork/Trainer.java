@@ -18,6 +18,7 @@ public class Trainer extends SwingWorker<Object, Object> {
     protected Object doInBackground() throws Exception {
         int numberOfGenerations = 20;
         int generationSize = 2000;
+        //networkSize[0] must always be 24!
         int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
         trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
@@ -117,6 +118,16 @@ public class Trainer extends SwingWorker<Object, Object> {
     }
 
     public double[] fillInput(SnakeSimulator snake, Network network) throws Exception {
+
+        /**
+        Input should be:
+         8 directions.
+         Every direction snake will look for:   Distance to food
+                                                Distance to its own body
+                                                Distance to a wall
+         So 24 (3x8) inputs
+         */
+
         int inputLength = snake.getWidth() * snake.getHeight();
         double[] inputs = new double[inputLength];
 
@@ -130,14 +141,14 @@ public class Trainer extends SwingWorker<Object, Object> {
             }
 
             if( i == 0){
-                inputs[position] = 1.0;
+                inputs[position] = 1.0;//head
             }else{
-                inputs[position] = 0.666;
+                inputs[position] = 0.666;//body
             }
 
             int applePosition = snake.apple_y * snake.getWidth() + snake.apple_x;
 
-            inputs[applePosition] = 0.333;
+            inputs[applePosition] = 0.333;//apple
         }
 
         return network.calculate(inputs);

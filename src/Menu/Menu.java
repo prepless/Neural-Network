@@ -31,7 +31,8 @@ public class Menu extends JFrame {
             //buttons
             JButton playGame = new JButton("Play Snake");
             JButton AIPlay = new JButton("Train Snake");
-            JButton rePlay = new JButton("Watch Replay");
+            JButton rePlay = new JButton("Watch replay");
+
             playGame.setBackground(Color.GREEN);
             AIPlay.setBackground(Color.GREEN);
             playGame.setForeground(Color.BLACK);
@@ -49,7 +50,7 @@ public class Menu extends JFrame {
             highScoreLabel.setPreferredSize(new Dimension(365,20));
 
             JScrollPane scroll = new JScrollPane(scoreBoardTextArea);
-            scroll.setPreferredSize(new Dimension(480,180));
+            scroll.setPreferredSize(new Dimension(480,260));
             scroll.getVerticalScrollBar().setBackground(Color.black);
             scroll.getHorizontalScrollBar().setBackground(Color.black);
             scoreBoardTextArea.setBackground(Color.black);
@@ -63,7 +64,7 @@ public class Menu extends JFrame {
             //menu panel
             menuPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
             menuPanel.setBackground(Color.black);
-            menuPanel.setPreferredSize(new Dimension(500, 340));
+            menuPanel.setPreferredSize(new Dimension(500, 380));
             menuPanel.setFocusable(true);
             menuPanel.add(playGame);
             menuPanel.add(AIPlay);
@@ -80,6 +81,12 @@ public class Menu extends JFrame {
             setLocationRelativeTo(null);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+            //set Everything visable
+             rePlay.setVisible(true);
+             scroll.setVisible(true);
+             AIPlay.setVisible(true);
+            playGame.setVisible(true);
+
             //action listeners
             playGame.addActionListener(
                     e -> {
@@ -89,7 +96,7 @@ public class Menu extends JFrame {
                         AIPlay.setVisible(false);
                         playGame.setVisible(false);
                         isPlayer = true;
-                        startSnake();
+                        playSnake();
                     });
             AIPlay.addActionListener(
                     e -> {
@@ -130,14 +137,29 @@ public class Menu extends JFrame {
                     });
         }
 
-        private void startSnake(){
+        private void playSnake(){
             Board board = new Board();
+            JPanel buttonholder = new JPanel();
+            buttonholder.setPreferredSize(new Dimension(470,30));
+            buttonholder.setBackground(Color.black);
+            JButton quitGame = new JButton("Quit game");
+            quitGame.setBackground(Color.GREEN);
+            quitGame.setForeground(Color.BLACK);
             menuPanel.add(board);
+            buttonholder.add(quitGame);
+            menuPanel.add(buttonholder);
             board.initBoard();
             board.requestFocus();
             pack();
             setTitle("Snake");
             setLocationRelativeTo(null);
+
+            quitGame.addActionListener(
+                    e -> {
+                        menuPanel.remove(board);
+                        menuPanel.remove(buttonholder);
+                        initUI();
+                    });
         }
 
         private void trainSnake() {
@@ -150,11 +172,10 @@ public class Menu extends JFrame {
         }
 
         public static void appendScore(int generation, double highScore){
-
-                if (highScore > highestHighscore) {
-                   highestHighscore = highScore;
-                    bestSnake = generation;
-                }
+            if (highScore > highestHighscore) {
+                highestHighscore = highScore;
+                bestSnake = generation;
+            }
                 highScoreLabel.setText("Highest highscore: generation " + bestSnake + " with a score of " + highestHighscore + ".");
                 scoreBoardTextArea.append("Generation " + generation + " has finished. High score: " + highScore + ".\n");
         }

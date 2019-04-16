@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class SnakeReplay {
     public ArrayList<Integer>moves = new ArrayList<>();
-    public ArrayList<Integer[]>appleLocations = new ArrayList<>();
+    private ArrayList<Integer[]>appleLocations = new ArrayList<>();
 
     public void addMoves(int move){
         //0 = left, 1 = right, 2 = up,3 = down
