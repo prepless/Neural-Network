@@ -17,7 +17,9 @@ public class Menu extends JFrame {
     private static JTextArea scoreBoardTextArea = new JTextArea();
     private JPanel menuPanel = new JPanel();
     private static boolean training = false;
+
     public static ArrayList<SnakeReplay> replays = new ArrayList();
+    public static boolean isPlayer = false;
 
     private Trainer trainer;
 
@@ -25,7 +27,7 @@ public class Menu extends JFrame {
             initUI();
         }
 
-        public void initUI() {
+    public void initUI() {
             //buttons
             JButton playGame = new JButton("Play Snake");
             JButton AIPlay = new JButton("Train Snake");
@@ -86,11 +88,13 @@ public class Menu extends JFrame {
                         scroll.setVisible(false);
                         AIPlay.setVisible(false);
                         playGame.setVisible(false);
+                        isPlayer = true;
                         startSnake();
                     });
             AIPlay.addActionListener(
                     e -> {
                             if(!training) {
+                                isPlayer = false;
                                 trainSnake();
                             }
                     });
@@ -143,7 +147,6 @@ public class Menu extends JFrame {
                     trainer.startNeuralNetwork();
             }
             catch (Exception ex){System.out.println(ex);}
-
         }
 
         public static void appendScore(int generation, double highScore){
@@ -161,7 +164,12 @@ public class Menu extends JFrame {
             scoreBoardTextArea.append("Snakes are done training, you can now see a replay of the best snake.\n");
         }
 
-        public static void main(String[] args) {
+        public static void appendPlayerScore(int totalScore) {
+            highScoreLabel.setText("Score: "+totalScore);
+        }
+
+
+    public static void main(String[] args) {
             EventQueue.invokeLater(() -> {
                 JFrame frame = new Menu();
             frame.setVisible(true);

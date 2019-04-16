@@ -1,12 +1,6 @@
 package game.snake;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+import Menu.Menu;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -87,9 +81,6 @@ public class Board extends JPanel implements ActionListener {
     }
 
     private void gameOver(Graphics g) {
-        System.out.println(snakeSimulator.newScore.elapsedGameTime());
-        System.out.println(snakeSimulator.newScore.totalScore());
-
         String msg = "Game Over";
         Font small = new Font("Helvetica", Font.BOLD, 14);
         FontMetrics metr = getFontMetrics(small);

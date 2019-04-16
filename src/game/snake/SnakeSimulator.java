@@ -1,5 +1,7 @@
 package game.snake;
 
+import Menu.Menu;
+
 public class SnakeSimulator {
 
 
@@ -145,6 +147,9 @@ public class SnakeSimulator {
             locateApple();
 
             newScore.setPoints();
+            if(Menu.isPlayer == true) {
+                Menu.appendPlayerScore(newScore.totalScore());
+            }
         }
     }
 

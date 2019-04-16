@@ -2,7 +2,7 @@ package game.snake;
 
 
 public class Score {
-    private int points;
+    private int points =0;
     private long startTime;
     private long elapsedTime;
     private long elapsedSeconds;
