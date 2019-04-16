@@ -1,10 +1,13 @@
 package Menu;
 
 import game.snake.Board;
+import game.snake.SnakeReplay;
 import neuralnetwork.Trainer;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Menu extends JFrame {
 
@@ -14,6 +17,7 @@ public class Menu extends JFrame {
     private static JTextArea scoreBoardTextArea = new JTextArea();
     private JPanel menuPanel = new JPanel();
     private static boolean training = false;
+    public static ArrayList<SnakeReplay> replays = new ArrayList();
 
     private Trainer trainer;
 
@@ -51,6 +55,8 @@ public class Menu extends JFrame {
             scoreBoardTextArea.setEditable(false);
             scoreBoardTextArea.setLineWrap(true);
             scoreBoardTextArea.setWrapStyleWord(true);
+            DefaultCaret caret = (DefaultCaret)scoreBoardTextArea.getCaret();
+            caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
             //menu panel
             menuPanel.setAlignmentX(java.awt.Component.CENTER_ALIGNMENT);
@@ -90,7 +96,33 @@ public class Menu extends JFrame {
                     });
             rePlay.addActionListener(
                     e -> {
-                       scoreBoardTextArea.append("No replays saved.\n");
+                        if(!training) {
+                            if(replays.size() == 0){scoreBoardTextArea.append("No replays saved.\n");}
+                            else{
+                                System.out.println(replays.get(bestSnake-1).moves.size());
+                                //0 = left, 1 = right, 2 = up,3 = down
+                                int move;
+                                for(int i = 0; i<replays.get(bestSnake-1).moves.size(); i++) {
+                                    move = replays.get(bestSnake - 1).moves.get(i);
+                                    switch (move){
+                                        case 0://left
+                                            System.out.println("Snake went left");
+                                            break;
+                                        case 1://right
+                                            System.out.println("Snake went right");
+                                            break;
+                                        case 2://up
+                                            System.out.println("Snake went up");
+                                            break;
+                                        case 3://down
+                                            System.out.println("Snake went down");
+                                            break;
+                                    }
+
+                                }
+                            }
+                        }
+                        else{scoreBoardTextArea.append("Snakes are currently training.\n");}
                     });
         }
 

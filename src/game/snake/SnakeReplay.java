@@ -2,8 +2,8 @@ package game.snake;
 import java.util.ArrayList;
 
 public class SnakeReplay {
-    private ArrayList<Integer>moves = new ArrayList<>();
-    private ArrayList<Integer[]>appleLocations = new ArrayList<>();
+    public ArrayList<Integer>moves = new ArrayList<>();
+    public ArrayList<Integer[]>appleLocations = new ArrayList<>();
 
     public void addMoves(int move){
         //0 = left, 1 = right, 2 = up,3 = down
@@ -18,7 +18,7 @@ public class SnakeReplay {
     }
 
     public void startReplay(){
-        Board board = new Board();
+        //Board board = new Board();
         //board.isPlayer = false;
     }
 

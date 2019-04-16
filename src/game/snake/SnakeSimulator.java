@@ -105,7 +105,6 @@ public class SnakeSimulator {
     }
 
     public void left(){
-        replay.addMoves(0);
         if(!rightDirection){
             leftDirection = true;
             upDirection = false;
@@ -114,7 +113,6 @@ public class SnakeSimulator {
     }
 
     public void right() {
-        replay.addMoves(1);
         if(!leftDirection){
             rightDirection = true;
             upDirection = false;
@@ -123,7 +121,6 @@ public class SnakeSimulator {
     }
 
     public void up(){
-        replay.addMoves(2);
         if(!downDirection) {
             upDirection = true;
             rightDirection = false;
@@ -132,7 +129,6 @@ public class SnakeSimulator {
     }
 
     public void down() {
-        replay.addMoves(3);
         if(!upDirection) {
             downDirection = true;
             rightDirection = false;

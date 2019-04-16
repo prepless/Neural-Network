@@ -1,5 +1,6 @@
 package neuralnetwork;
 import Menu.Menu;
+import game.snake.SnakeReplay;
 import game.snake.SnakeSimulator;
 
 import javax.swing.*;
@@ -8,14 +9,15 @@ import java.util.List;
 
 public class Trainer extends SwingWorker<Object, Object> {
 
-    public double highScore = 0.0;
-    public int generation =0;
+    public void startNeuralNetwork() {
+        execute(); // start to do the "doInBackground stuff"
+    }
 
     //do In Background so that JFrame does not freeze
     @Override
     protected Object doInBackground() throws Exception {
-        int numberOfGenerations = 1000;
-        int generationSize = 1000;
+        int numberOfGenerations = 20;
+        int generationSize = 2000;
         int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
         trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
@@ -26,22 +28,22 @@ public class Trainer extends SwingWorker<Object, Object> {
     protected void done() {
         Menu.setTrainingDone();
     }
-    public void startNeuralNetwork() {
-        execute(); // start to do the "doInBackground stuff"
-    }
 
     public void createGenerations(int numberOfgenerations, int generationSize, int[] size) throws Exception {
         List<GameResult> resultList = executeNetworks(createFirstGeneration(generationSize, size));
         for (int i = 0; i < numberOfgenerations; i++){
+            //determine winner and update scoreboard
             GameResult winner = determineWinner(resultList);
-            highScore =winner.calculateScore();
-            generation = i+1;
+            double highScore =winner.calculateScore();
+            int generation = i+1;
             Menu.appendScore(generation,highScore);
 
+            //create next generation as a copy of the winner
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
             resultList = executeNetworks(networkList);
 
-        }done();
+        }
+        done();
     }
 
     public List<Network> createFirstGeneration(int generationSize, int[] size){
@@ -69,18 +71,19 @@ public class Trainer extends SwingWorker<Object, Object> {
         ArrayList<GameResult> gameResults = new ArrayList<>();
         for (Network network: networkList) {
             SnakeSimulator snake = new SnakeSimulator(30, 30);
-
+            SnakeReplay replay = new SnakeReplay();
             while(snake.getIngame()){
                 double[] output = fillInput(snake,network);
-                selectDirection(snake, output);
+                selectDirection(snake, output,replay);
                 snake.step();
             }
             gameResults.add(new GameResult(snake,network));
+            Menu.replays.add(replay);
         }
         return gameResults;
     }
 
-    public void selectDirection(SnakeSimulator snake, double[]output){
+    public void selectDirection(SnakeSimulator snake, double[]output,SnakeReplay replay){
         double lastVal = 0;
         int outputNumber = 0;
         for(int i = 0; i < output.length; i++){
@@ -92,15 +95,19 @@ public class Trainer extends SwingWorker<Object, Object> {
         //[0]left [1]right [2]up [3]down
         switch (outputNumber){
             case 0:
+                replay.addMoves(0);
                 snake.left();
                 break;
             case 1:
+                replay.addMoves(1);
                 snake.right();
                 break;
             case 2:
+                replay.addMoves(2);
                 snake.up();
                 break;
             default:
+                replay.addMoves(3);
                 snake.down();
                 break;
         }
