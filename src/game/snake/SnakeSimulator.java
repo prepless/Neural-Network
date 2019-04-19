@@ -48,7 +48,6 @@ public class SnakeSimulator {
     }
 
     public void move() {
-
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
@@ -56,18 +55,23 @@ public class SnakeSimulator {
 
         if (leftDirection) {
             x[0] -= 1;
+            replay.addMoves(Direction.Left);
+
         }
 
         if (rightDirection) {
             x[0] += 1;
+            replay.addMoves(Direction.Right);
         }
 
         if (upDirection) {
             y[0] -= 1;
+            replay.addMoves(Direction.Up);
         }
 
         if (downDirection) {
             y[0] += 1;
+            replay.addMoves(Direction.Down);
         }
     }
 
@@ -108,6 +112,7 @@ public class SnakeSimulator {
 
     public void left(){
         if(!rightDirection){
+            replay.moves.add(Direction.Left);
             leftDirection = true;
             upDirection = false;
             downDirection = false;
@@ -116,6 +121,7 @@ public class SnakeSimulator {
 
     public void right() {
         if(!leftDirection){
+            replay.moves.add(Direction.Right);
             rightDirection = true;
             upDirection = false;
             downDirection = false;
@@ -124,6 +130,7 @@ public class SnakeSimulator {
 
     public void up(){
         if(!downDirection) {
+            replay.moves.add(Direction.Up);
             upDirection = true;
             rightDirection = false;
             leftDirection = false;
@@ -132,6 +139,7 @@ public class SnakeSimulator {
 
     public void down() {
         if(!upDirection) {
+            replay.moves.add(Direction.Down);
             downDirection = true;
             rightDirection = false;
             leftDirection = false;
@@ -178,6 +186,10 @@ public class SnakeSimulator {
 
     public int getHeight() {
         return height;
+    }
+
+    public SnakeReplay getReplay() {
+        return replay;
     }
 }
 

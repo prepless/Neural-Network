@@ -1,6 +1,5 @@
 package neuralnetwork;
 import Menu.Menu;
-import game.snake.SnakeReplay;
 import game.snake.SnakeSimulator;
 
 import javax.swing.*;
@@ -16,8 +15,8 @@ public class Trainer extends SwingWorker<Object, Object> {
     //do In Background so that JFrame does not freeze
     @Override
     protected Object doInBackground() throws Exception {
-        int numberOfGenerations = 20;
-        int generationSize = 2000;
+        int numberOfGenerations = 15;
+        int generationSize = 100;
         //networkSize[0] must always be 24!
         int[] networkSize = new int[]{900 ,18 ,18 ,4 };
         Trainer trainer = new Trainer();
@@ -35,9 +34,8 @@ public class Trainer extends SwingWorker<Object, Object> {
         for (int i = 0; i < numberOfgenerations; i++){
             //determine winner and update scoreboard
             GameResult winner = determineWinner(resultList);
-            double highScore =winner.calculateScore();
             int generation = i+1;
-            Menu.appendScore(generation,highScore);
+            Menu.appendScore(generation,winner);
 
             //create next generation as a copy of the winner
             List<Network> networkList= createNextGeneration(winner.getNetwork(), generationSize);
@@ -71,19 +69,17 @@ public class Trainer extends SwingWorker<Object, Object> {
         ArrayList<GameResult> gameResults = new ArrayList<>();
         for (Network network: networkList) {
             SnakeSimulator snake = new SnakeSimulator(30, 30);
-            SnakeReplay replay = new SnakeReplay();
             while(snake.getIngame()){
                 double[] output = fillInput(snake,network);
-                selectDirection(snake, output,replay);
+                selectDirection(snake, output);
                 snake.step();
             }
             gameResults.add(new GameResult(snake,network));
-            Menu.replays.add(replay);
         }
         return gameResults;
     }
 
-    public void selectDirection(SnakeSimulator snake, double[]output,SnakeReplay replay){
+    public void selectDirection(SnakeSimulator snake, double[]output){
         double lastVal = 0;
         int outputNumber = 0;
         for(int i = 0; i < output.length; i++){
@@ -92,22 +88,17 @@ public class Trainer extends SwingWorker<Object, Object> {
                 outputNumber=i;
             }
         }
-        //[0]left [1]right [2]up [3]down
         switch (outputNumber){
             case 0:
-                replay.addMoves(0);
                 snake.left();
                 break;
             case 1:
-                replay.addMoves(1);
                 snake.right();
                 break;
             case 2:
-                replay.addMoves(2);
                 snake.up();
                 break;
             default:
-                replay.addMoves(3);
                 snake.down();
                 break;
         }
@@ -119,7 +110,10 @@ public class Trainer extends SwingWorker<Object, Object> {
 
     public double[] fillInput(SnakeSimulator snake, Network network) throws Exception {
 
-        /**
+        /** in snake Simulater onderstaande methodes(bijf. snakeSimulater.distanceToFood()).
+         *
+         * In playSnake deze gegevens life afbeelden.
+         *
         Input should be:
          8 directions.
          Every direction snake will look for:   Distance to food

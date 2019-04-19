@@ -102,7 +102,6 @@ public class Network {
     }
     //----------------------////////////////
 
-
     public void initializeRandom(){
         for(int layer =1 ; layer<networkSize; layer++){
             for (int neuron = 0; neuron<networkLayerSizes[layer]; neuron++){
@@ -114,7 +113,6 @@ public class Network {
             }
         }
     }
-
 
     //--------------------//////////////////////////////////////////////////////////--------------------//
 
@@ -156,5 +154,4 @@ public class Network {
     private double sigmoid(double x){
         return 1d/(1+Math.exp(-x));
     }
-
 }

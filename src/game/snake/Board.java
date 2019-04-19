@@ -1,10 +1,11 @@
 package game.snake;
-import Menu.Menu;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 public class Board extends JPanel implements ActionListener {
+
+    public boolean isReplay = false;
 
     private final int B_WIDTH = 300;
     private final int B_HEIGHT = 300;
@@ -20,6 +21,7 @@ public class Board extends JPanel implements ActionListener {
     private Image head;
 
     private SnakeSimulator snakeSimulator = new SnakeSimulator(30, 30);
+    private SnakeReplay snakeReplay;
 
     public Board() {
         //initBoard();
@@ -32,6 +34,8 @@ public class Board extends JPanel implements ActionListener {
         setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
+        ///onderstaande replay zijn die al opgeslagen is, geen nieuwe
+        ///if(isReplay){SnakeReplay snakeReplay = new SnakeReplay();}
         loadImages();
         initGame();
     }
@@ -57,7 +61,6 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         doDrawing(g);
     }
 
@@ -93,6 +96,8 @@ public class Board extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         snakeSimulator.step();
+       // if(isReplay){snakeReplay.doNextMove();}
+
         if (!snakeSimulator.getIngame()) {
             timer.stop();
         }
@@ -103,6 +108,7 @@ public class Board extends JPanel implements ActionListener {
     private class TAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
+            if(!isReplay) {
                 int key = e.getKeyCode();
 
                 if (key == KeyEvent.VK_LEFT) {
@@ -120,6 +126,7 @@ public class Board extends JPanel implements ActionListener {
                 if (key == KeyEvent.VK_DOWN) {
                     snakeSimulator.down();
                 }
+            }
         }
 
         @Override

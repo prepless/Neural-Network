@@ -1,7 +1,9 @@
 package Menu;
 
 import game.snake.Board;
+import game.snake.Direction;
 import game.snake.SnakeReplay;
+import neuralnetwork.GameResult;
 import neuralnetwork.Trainer;
 
 import javax.swing.*;
@@ -13,9 +15,12 @@ public class Menu extends JFrame {
 
     private static int bestSnake = 0;
     private static double highestHighscore = 0.0;
+
     private static JLabel highScoreLabel = new JLabel();
     private static JTextArea scoreBoardTextArea = new JTextArea();
     private JPanel menuPanel = new JPanel();
+
+
     private static boolean training = false;
 
     public static ArrayList<SnakeReplay> replays = new ArrayList();
@@ -32,7 +37,7 @@ public class Menu extends JFrame {
             JButton playGame = new JButton("Play Snake");
             JButton AIPlay = new JButton("Train Snake");
             JButton rePlay = new JButton("Watch replay");
-
+            JScrollPane scroll = new JScrollPane(scoreBoardTextArea);
             playGame.setBackground(Color.GREEN);
             AIPlay.setBackground(Color.GREEN);
             playGame.setForeground(Color.BLACK);
@@ -49,7 +54,6 @@ public class Menu extends JFrame {
             highScoreLabel.setVerticalAlignment(SwingConstants.CENTER);
             highScoreLabel.setPreferredSize(new Dimension(365,20));
 
-            JScrollPane scroll = new JScrollPane(scoreBoardTextArea);
             scroll.setPreferredSize(new Dimension(480,260));
             scroll.getVerticalScrollBar().setBackground(Color.black);
             scroll.getHorizontalScrollBar().setBackground(Color.black);
@@ -96,7 +100,7 @@ public class Menu extends JFrame {
                         AIPlay.setVisible(false);
                         playGame.setVisible(false);
                         isPlayer = true;
-                        playSnake();
+                        playSnake(false);
                     });
             AIPlay.addActionListener(
                     e -> {
@@ -107,29 +111,36 @@ public class Menu extends JFrame {
                     });
             rePlay.addActionListener(
                     e -> {
-                        if(!training) {
-                            if(replays.size() == 0){scoreBoardTextArea.append("No replays saved.\n");}
-                            else{
-                                System.out.println(replays.get(bestSnake-1).moves.size());
-                                //0 = left, 1 = right, 2 = up,3 = down
-                                int move;
-                                for(int i = 0; i<replays.get(bestSnake-1).moves.size(); i++) {
-                                    move = replays.get(bestSnake - 1).moves.get(i);
-                                    switch (move){
-                                        case 0://left
-                                            System.out.println("Snake went left");
-                                            break;
-                                        case 1://right
-                                            System.out.println("Snake went right");
-                                            break;
-                                        case 2://up
-                                            System.out.println("Snake went up");
-                                            break;
-                                        case 3://down
-                                            System.out.println("Snake went down");
-                                            break;
-                                    }
+                        if(replays.size()==0) {
+                                scoreBoardTextArea.append("No replays saved.\n");
+                            }
+                        if (!training){
+                            highScoreLabel.setText("Replay:");
+                            rePlay.setVisible(false);
+                            scroll.setVisible(false);
+                            AIPlay.setVisible(false);
+                            playGame.setVisible(false);
+                            isPlayer=false;
+                            playSnake(true);
 
+                            System.out.println(replays.get(bestSnake-1).moves.size());
+                            //0 = left, 1 = right, 2 = up,3 = down
+                            Direction move;
+                            for(int i = 0; i<replays.get(bestSnake-1).moves.size(); i++) {
+                                move = replays.get(bestSnake - 1).moves.get(i);
+                                switch (move){
+                                    case Left://left
+                                        System.out.println("Snake went left");
+                                        break;
+                                    case Right://right
+                                        System.out.println("Snake went right");
+                                        break;
+                                    case Up ://up
+                                        System.out.println("Snake went up");
+                                        break;
+                                    case Down://down
+                                        System.out.println("Snake went down");
+                                        break;
                                 }
                             }
                         }
@@ -137,7 +148,7 @@ public class Menu extends JFrame {
                     });
         }
 
-        private void playSnake(){
+        private void playSnake(boolean isReplay){
             Board board = new Board();
             JPanel buttonholder = new JPanel();
             buttonholder.setPreferredSize(new Dimension(470,30));
@@ -148,12 +159,16 @@ public class Menu extends JFrame {
             menuPanel.add(board);
             buttonholder.add(quitGame);
             menuPanel.add(buttonholder);
+            board.isReplay = isReplay;
             board.initBoard();
             board.requestFocus();
             pack();
             setTitle("Snake");
             setLocationRelativeTo(null);
-
+            if(isReplay){
+                SnakeReplay snakeReplay = new SnakeReplay();
+                snakeReplay.startReplay();
+            }
             quitGame.addActionListener(
                     e -> {
                         menuPanel.remove(board);
@@ -171,7 +186,9 @@ public class Menu extends JFrame {
             catch (Exception ex){System.out.println(ex);}
         }
 
-        public static void appendScore(int generation, double highScore){
+        public static void appendScore(int generation, GameResult winner){
+            double highScore =winner.calculateScore();
+            replays.add(winner.getGame().getReplay());
             if (highScore > highestHighscore) {
                 highestHighscore = highScore;
                 bestSnake = generation;
