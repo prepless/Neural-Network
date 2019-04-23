@@ -33,11 +33,11 @@ public class Network {
             this.errorSignal[i] = new double[networkLayerSizes[i]];
             this.outputDerivative[i] = new double[networkLayerSizes[i]];
 
-            this.bias[i] = NetworkTool.createRandomArray(networkLayerSizes[i],-1.0,1.0);
+            this.bias[i] = NetworkTool.createRandomArray(networkLayerSizes[i],0.0,1.0);
 
             if(i>0){
                 int prevSize = networkLayerSizes[i-1];
-                weights[i] = NetworkTool.createRandomArray(networkLayerSizes[i], prevSize, 0,1.0/prevSize);
+                weights[i] = NetworkTool.createRandomArray(networkLayerSizes[i], prevSize, -1.0,1.0/prevSize);
             }
         }
     }
@@ -45,12 +45,12 @@ public class Network {
     public void randomize() {
         int fistBiasLayer = NetworkTool.randomValue(1,this.bias.length);
         int secondBiasLayer = NetworkTool.randomValue(0,this.bias[fistBiasLayer].length);
-        this.bias[fistBiasLayer][secondBiasLayer] = NetworkTool.randomValue(-1.0,1.0);
+        this.bias[fistBiasLayer][secondBiasLayer] = NetworkTool.randomValue(0.0,1.0);
 
         int fistWeightsLayer = NetworkTool.randomValue(1,this.weights.length);
         int secondWeightsLayer = NetworkTool.randomValue(0,this.weights[fistWeightsLayer].length);
         int thirdWeightsLayer = NetworkTool.randomValue(0,this.weights[fistWeightsLayer][secondWeightsLayer].length);
-        this.weights[fistWeightsLayer][secondWeightsLayer][thirdWeightsLayer] = NetworkTool.randomValue(0.0,1.0);
+        this.weights[fistWeightsLayer][secondWeightsLayer][thirdWeightsLayer] = NetworkTool.randomValue(-1.0,1.0);
     }
 
     public Network(Network originalNetwork){

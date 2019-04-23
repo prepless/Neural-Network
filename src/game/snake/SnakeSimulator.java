@@ -56,7 +56,6 @@ public class SnakeSimulator {
         if (leftDirection) {
             x[0] -= 1;
             replay.addMoves(Direction.Left);
-
         }
 
         if (rightDirection) {
@@ -190,6 +189,48 @@ public class SnakeSimulator {
 
     public SnakeReplay getReplay() {
         return replay;
+    }
+
+    public double getyDistanceToApple() {
+        return Math.abs(((double)y[0]-apple_y)/10);
+    }
+
+    public double getDistanceToTopWall() {
+        System.out.println(((double)y[0]/10));
+        return ((double)y[0]/10);
+    }
+
+    public double getDistanceToBottomWall() {
+        return ((double)height - y[0])/10;
+    }
+
+    public double getDistanceToLeftWall() {
+        return ((double)x[0])/10;
+    }
+
+    public double getDistanceToRightWall() {
+        return ((double)width - x[0])/10;
+    }
+
+    public double getxDistanceToApple() {
+        return Math.abs(((double)x[0]-apple_x)/10);
+    }
+
+    public double getDistanceToSnake(){
+        int distance=4;
+        for (int z = dots; z > 0; z--) {
+            if ((z > 4) && (x[0] == x[z]) && (upDirection || downDirection)) {
+                if(Math.abs(y[0] - y[z])<3) {
+                    distance=Math.abs(y[0] - y[z]);
+                }
+            }
+            if ((z > 4) && (y[0] == y[z]) && (rightDirection || leftDirection)) {
+                if(Math.abs(x[0] - x[z])<3) {
+                    distance=Math.abs(x[0] - x[z]);
+                }
+            }
+        }
+        return (double)distance/10;
     }
 }
 

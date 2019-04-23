@@ -189,7 +189,7 @@ public class Menu extends JFrame {
         public static void appendScore(int generation, GameResult winner){
             double highScore =winner.calculateScore();
             replays.add(winner.getGame().getReplay());
-            if (highScore > highestHighscore) {
+            if ((highScore > highestHighscore) || (highScore == highestHighscore && generation > bestSnake)) {
                 highestHighscore = highScore;
                 bestSnake = generation;
             }

@@ -15,10 +15,10 @@ public class Trainer extends SwingWorker<Object, Object> {
     //do In Background so that JFrame does not freeze
     @Override
     protected Object doInBackground() throws Exception {
-        int numberOfGenerations = 15;
-        int generationSize = 100;
-        //networkSize[0] must always be 24!
-        int[] networkSize = new int[]{900 ,18 ,18 ,4 };
+        int numberOfGenerations = 100;
+        int generationSize = 750;
+        //networkSize[0] must always be 7!
+        int[] networkSize = new int[]{7 ,21 ,21 ,4 };
         Trainer trainer = new Trainer();
         trainer.createGenerations(numberOfGenerations,generationSize,networkSize);
         return null;
@@ -115,14 +115,25 @@ public class Trainer extends SwingWorker<Object, Object> {
          * In playSnake deze gegevens life afbeelden.
          *
         Input should be:
-         8 directions.
-         Every direction snake will look for:   Distance to food
-                                                Distance to its own body
-                                                Distance to a wall
-         So 24 (3x8) inputs
-         */
+         4 directions.
+         Every direction snake will look for:   Distance to food (2 inputs: x and y axis)
+                                                Distance to its own body (1 input: total distance)
+                                                Distance to a wall (4 inputs: top, bottom, left and right wall)
 
-        int inputLength = snake.getWidth() * snake.getHeight();
+         7 inputs in total
+         */
+        int inputLength = 7;
+        double[] inputs = new double[inputLength];
+        inputs[0] = snake.getDistanceToBottomWall();
+        inputs[1] = snake.getDistanceToLeftWall();
+        inputs[2] = snake.getDistanceToRightWall();
+        inputs[3] = snake.getDistanceToTopWall();
+        inputs[4] = snake.getxDistanceToApple();
+        inputs[5] = snake.getyDistanceToApple();
+        inputs[6] = snake.getDistanceToSnake();
+
+
+        /*int inputLength = snake.getWidth() * snake.getHeight();
         double[] inputs = new double[inputLength];
 
         for(int i = 0; i < snake.dots; i++){
@@ -143,7 +154,7 @@ public class Trainer extends SwingWorker<Object, Object> {
             int applePosition = snake.apple_y * snake.getWidth() + snake.apple_x;
 
             inputs[applePosition] = 0.333;//apple
-        }
+        }*/
 
         return network.calculate(inputs);
 

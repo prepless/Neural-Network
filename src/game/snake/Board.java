@@ -21,7 +21,6 @@ public class Board extends JPanel implements ActionListener {
     private Image head;
 
     private SnakeSimulator snakeSimulator = new SnakeSimulator(30, 30);
-    private SnakeReplay snakeReplay;
 
     public Board() {
         //initBoard();
