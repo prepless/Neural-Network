@@ -38,7 +38,7 @@ public class SnakeSimulator {
     }
 
     public void initGame() {
-        dots = 3;
+        dots = 35;
         for (int z = 0; z < dots; z++) {
             x[z] = 5 - z;
             y[z] = 5;
@@ -48,6 +48,11 @@ public class SnakeSimulator {
     }
 
     public void move() {
+
+      //  double up = getUpDistanceToSnake();
+      //  double down = getDownDistanceToSnake();
+      //  double right = getRightDistanceToSnake();
+       // double left = getLeftDistanceToSnake();
         for (int z = dots; z > 0; z--) {
             x[z] = x[(z - 1)];
             y[z] = y[(z - 1)];
@@ -192,38 +197,85 @@ public class SnakeSimulator {
     }
 
     public double getyDistanceToApple() {
-        return Math.abs(((double)y[0]-apple_y)/10);
-    }
-
-    public double getDistanceToTopWall() {
-        System.out.println(((double)y[0]/10));
-        return ((double)y[0]/10);
-    }
-
-    public double getDistanceToBottomWall() {
-        return ((double)height - y[0])/10;
-    }
-
-    public double getDistanceToLeftWall() {
-        return ((double)x[0])/10;
-    }
-
-    public double getDistanceToRightWall() {
-        return ((double)width - x[0])/10;
+        return Math.abs(((double)y[0]-apple_y)/height);
     }
 
     public double getxDistanceToApple() {
-        return Math.abs(((double)x[0]-apple_x)/10);
+        return Math.abs(((double)x[0]-apple_x)/width);
     }
 
-    public double getDistanceToSnake(){
+    public double getDistanceToTopWall() {
+        return ((double)y[0]/height);
+    }
+
+    public double getDistanceToBottomWall() {
+        return ((double)height - y[0])/height;
+    }
+
+    public double getDistanceToLeftWall() {
+        return ((double)x[0])/width;
+    }
+
+    public double getDistanceToRightWall() {
+        return ((double)width - x[0])/width;
+    }
+
+    public double getLeftDistanceToSnake(){
+        int xPos = this.x[0];
+        for(int i =xPos-1; i>=0;i--){
+            if(snakeExistsOnPos(i,this.y[0])){
+               // System.out.println("LeftDistance:"+(xPos-i)/(double)width);
+                return (xPos-i)/(double)width;
+            }
+        }
+        return 1;
+    }
+
+    public double getRightDistanceToSnake(){
+        int xPos = this.x[0];
+        for(int i =xPos+1; i<=width;i++){
+            if(snakeExistsOnPos(i,this.y[0])){
+              //  System.out.println("RightDistance:"+(i-xPos)/(double)width);
+                return (i-xPos)/(double)width;
+            }
+        }
+        return 1;
+    }
+
+    public double getUpDistanceToSnake(){
+        int yPos = this.y[0];
+        for(int i =yPos-1; i>=0;i--){
+            if(snakeExistsOnPos(this.x[0],i)){
+              //  System.out.println("UpDistance:"+(yPos-i)/(double)width);
+                return (yPos-i)/(double)width;
+            }
+        }
+        return 1;
+    }
+
+    public double getDownDistanceToSnake(){
+        int yPos = this.y[0];
+        for(int i =yPos+1; i<=width;i++){
+            if(snakeExistsOnPos(this.x[0],i)){
+              //  System.out.println("DownDistance:"+(i-yPos)/(double)width);
+                return (i-yPos)/(double)width;
+            }
+        }
+        return 1;
+    }
+
+    public boolean snakeExistsOnPos(int x, int y){
+        for (int z = dots; z > 0; z--) {
+            if (this.x[z]==x && this.y[z]==y) {
+            return true;
+            }
+        }
+        return false;
+    }
+
+    /*public double getYDistanceToSnake(){
         int distance=4;
         for (int z = dots; z > 0; z--) {
-            if ((z > 4) && (x[0] == x[z]) && (upDirection || downDirection)) {
-                if(Math.abs(y[0] - y[z])<3) {
-                    distance=Math.abs(y[0] - y[z]);
-                }
-            }
             if ((z > 4) && (y[0] == y[z]) && (rightDirection || leftDirection)) {
                 if(Math.abs(x[0] - x[z])<3) {
                     distance=Math.abs(x[0] - x[z]);
@@ -231,7 +283,7 @@ public class SnakeSimulator {
             }
         }
         return (double)distance/10;
-    }
+    }*/
 }
 
 
